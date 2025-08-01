@@ -1,1 +1,30 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
+
+  body {
+    font-family: 'Comic Neue', sans-serif;
+    background-color: #E3F2FD;
+  }
+
+  :root {
+    --bs-primary: #4CAF50;
+    --bs-primary-rgb: 76, 175, 80;
+    --bs-secondary: #FFCA28;
+    --bs-secondary-rgb: 255, 202, 40;
+    --bs-body-bg: #E3F2FD;
+  }
+
+  .btn-primary {
+    --bs-btn-bg: #4CAF50;
+    --bs-btn-border-color: #4CAF50;
+    --bs-btn-hover-bg: #388E3C;
+    --bs-btn-hover-border-color: #388E3C;
+  }
+
+  .bg-accent {
+    background-color: #FFCA28;
+  }
+
+  .form-control:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 0.25rem rgba(76, 175, 80, 0.25);
+  }
