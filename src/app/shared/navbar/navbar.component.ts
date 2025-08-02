@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { NgxSonnerToaster } from 'ngx-sonner';
+import { NgxSonnerToaster, toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-navbar',
@@ -11,13 +11,15 @@ import { NgxSonnerToaster } from 'ngx-sonner';
 })
 export class NavbarComponent {
   router = inject(Router);
+
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
+    return !!localStorage.getItem('access_token'); // Cambiado de 'token' a 'access_token'
   }
 
   logout() {
-    localStorage.removeItem('token');
+    localStorage.removeItem('access_token'); // Cambiado de 'token' a 'access_token'
     localStorage.removeItem('chatHistory');
+    toast.success('¡Has cerrado sesión!');
     this.router.navigate(['/login']);
   }
 }

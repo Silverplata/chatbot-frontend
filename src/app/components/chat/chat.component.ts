@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../services/api.service';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-chat',
@@ -53,27 +54,39 @@ export class ChatComponent {
       this.loading.set(true);
       const { question, theme } = this.chatForm.value;
       const fullQuestion = theme !== 'general' ? `[${theme}] ${question}` : question;
-      const token = localStorage.getItem('token') || '';
+      const token = localStorage.getItem('access_token') || ''; // Cambiado de 'token' a 'access_token'
+      if (!token) {
+        this.error.set('Por favor, inicia sesión para usar el chat.');
+        toast.error('Por favor, inicia sesión para usar el chat.');
+        this.loading.set(false);
+        return;
+      }
       this.apiService.chat(fullQuestion, token).subscribe({
         next: (response) => {
           const newMessages = [...this.messages(), { question, response: response.response }];
           this.messages.set(newMessages);
           this.saveMessages(newMessages);
           this.chatForm.reset({ theme });
-          this.scrollToBottom(); // Llamar scrollToBottom solo después de agregar un nuevo mensaje
+          this.scrollToBottom();
           this.loading.set(false);
+          toast.success('¡Respuesta recibida!');
         },
         error: (err) => {
-          this.error.set('Error al obtener respuesta');
+          this.error.set('No se pudo obtener una respuesta. ¡Inténtalo otra vez!');
           console.error('Chat error:', err);
+          toast.error('No se pudo obtener una respuesta. ¡Inténtalo otra vez!');
           this.loading.set(false);
         }
       });
+    } else {
+      toast.error('Por favor, escribe una pregunta.');
+      this.loading.set(false);
     }
   }
 
   clearHistory() {
     this.messages.set([]);
     this.saveMessages([]);
+    toast.success('Historial borrado.');
   }
 }
