@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { toast } from 'ngx-sonner';
-import { Observable } from 'rxjs';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 interface ColorPalette {
   primary_color: string;
@@ -24,18 +25,26 @@ interface User {
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './appearance.component.html',
-  styleUrls: ['./appearance.component.css']
+  styleUrls: ['./appearance.component.css'],
+  animations: [
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'scale(0.9)' }),
+        animate('300ms ease-in', style({ opacity: 1, transform: 'scale(1)' }))
+      ])
+    ])
+  ]
 })
 export class AppearanceComponent implements OnInit {
   editAppearanceForm!: FormGroup;
   private apiUrl = 'http://localhost:8000';
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private router: Router) {
     this.editAppearanceForm = this.fb.group({
-      primaryColor: ['#4CAF50'],
-      secondaryColor: ['#FFCA28'],
-      accentColor: ['#2196F3'],
-      backgroundColor: ['#E3F2FD']
+      primaryColor: ['#4CAF50', [Validators.required, Validators.pattern(/^#[0-9A-Fa-f]{6}$/)]],
+      secondaryColor: ['#FFCA28', [Validators.required, Validators.pattern(/^#[0-9A-Fa-f]{6}$/)]],
+      accentColor: ['#2196F3', [Validators.required, Validators.pattern(/^#[0-9A-Fa-f]{6}$/)]],
+      backgroundColor: ['#E3F2FD', [Validators.required, Validators.pattern(/^#[0-9A-Fa-f]{6}$/)]]
     });
   }
 
@@ -65,8 +74,14 @@ export class AppearanceComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error loading user palette:', error);
-          toast.error('No se pudo cargar la paleta de colores.');
-          this.resetToDefault();
+          if (error.status === 401) {
+            localStorage.removeItem('access_token');
+            toast.error('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
+            this.router.navigate(['/login']);
+          } else {
+            toast.error('No se pudo cargar la paleta de colores.');
+            this.resetToDefault();
+          }
         }
       });
   }
@@ -81,7 +96,7 @@ export class AppearanceComponent implements OnInit {
 
   onSubmit(): void {
     if (this.editAppearanceForm.invalid) {
-      toast.error('Por favor, selecciona todos los colores.');
+      toast.error('Por favor, selecciona colores válidos.');
       return;
     }
 
@@ -100,7 +115,13 @@ export class AppearanceComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error updating palette:', error);
-          toast.error('No se pudo actualizar la paleta de colores.');
+          if (error.status === 401) {
+            localStorage.removeItem('access_token');
+            toast.error('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
+            this.router.navigate(['/login']);
+          } else {
+            toast.error('No se pudo actualizar la paleta de colores.');
+          }
         }
       });
   }
@@ -130,7 +151,13 @@ export class AppearanceComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error resetting palette:', error);
-          toast.error('No se pudo restablecer la paleta de colores.');
+          if (error.status === 401) {
+            localStorage.removeItem('access_token');
+            toast.error('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
+            this.router.navigate(['/login']);
+          } else {
+            toast.error('No se pudo restablecer la paleta de colores.');
+          }
         }
       });
   }
