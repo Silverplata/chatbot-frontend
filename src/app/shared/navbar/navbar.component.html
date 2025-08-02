@@ -1,0 +1,31 @@
+<nav class="nav-app navbar navbar-expand-lg bg-white shadow-sm">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/home">Chat Educativo</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/home">Inicio</a>
+        </li>
+        @if (isLoggedIn()) {
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/chat">Chat</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/profile">Perfil</a>
+          </li>
+          <li class="nav-item">
+            <button class="btn btn-secondary ms-2" (click)="logout()">Cerrar Sesión</button>
+          </li>
+        } @else {
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/login">Iniciar Sesión</a>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+</nav>
+<ngx-sonner-toaster />

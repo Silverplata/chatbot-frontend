@@ -1,0 +1,78 @@
+<section>
+  <div class="appearance-panel">
+    <div class="panel-header">
+      <h2 class="panel-title">¡Personaliza tu Chat!</h2>
+      <p class="panel-subtitle">Elige colores que te hagan feliz</p>
+    </div>
+    <form [formGroup]="editAppearanceForm" (ngSubmit)="onSubmit()">
+      <div class="color-grid">
+        <div class="color-input-card">
+          <div class="color-info">
+            <input type="color" class="color-input" formControlName="primaryColor" aria-label="Color principal">
+            <label class="color-label">Color Principal</label>
+            <p class="color-description">Para botones y detalles importantes</p>
+          </div>
+        </div>
+        <div class="color-input-card">
+          <div class="color-info">
+            <input type="color" class="color-input" formControlName="secondaryColor" aria-label="Color secundario">
+            <label class="color-label">Color Secundario</label>
+            <p class="color-description">Para fondos y detalles</p>
+          </div>
+        </div>
+        <div class="color-input-card">
+          <div class="color-info">
+            <input type="color" class="color-input" formControlName="accentColor" aria-label="Color de acento">
+            <label class="color-label">Color de Acento</label>
+            <p class="color-description">Para resaltar elementos</p>
+          </div>
+        </div>
+        <div class="color-input-card">
+          <div class="color-info">
+            <input type="color" class="color-input" formControlName="backgroundColor" aria-label="Color de fondo">
+            <label class="color-label">Color de Fondo</label>
+            <p class="color-description">Para el fondo de la pantalla</p>
+          </div>
+        </div>
+      </div>
+      <div class="theme-preview-section">
+        <h3 class="section-title">Vista Previa</h3>
+        <div class="theme-preview">
+          <div class="preview-element preview-primary">
+            <div class="preview-icon"></div>
+            <span class="preview-text">Botones Principales</span>
+          </div>
+          <div class="preview-element preview-secondary">
+            <div class="preview-icon"></div>
+            <span class="preview-text">Fondos Secundarios</span>
+          </div>
+          <div class="preview-element preview-accent">
+            <div class="preview-icon"></div>
+            <span class="preview-text">Detalles de Acento</span>
+          </div>
+          <div class="preview-element preview-background">
+            <div class="preview-icon"></div>
+            <span class="preview-text">Fondo General</span>
+          </div>
+        </div>
+      </div>
+      <div class="action-buttons">
+        <button class="btn btn-primary" type="submit" [disabled]="editAppearanceForm.invalid">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+            <polyline points="17,21 17,13 7,13 7,21"/>
+            <polyline points="7,3 7,8 15,8"/>
+          </svg>
+          Guardar Colores
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="resetToDefault()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="1 4 1 10 7 10"/>
+            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+          </svg>
+          Restablecer
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
