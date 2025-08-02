@@ -1,8 +1,8 @@
 import { Component, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
-import { CommonModule } from '@angular/common';
 import { toast } from 'ngx-sonner';
 
 @Component({
@@ -27,16 +27,18 @@ export class LoginComponent {
       const { username, password } = this.loginForm.value;
       this.apiService.login(username, password).subscribe({
         next: (response) => {
-          localStorage.setItem('access_token', response.access_token); // Cambiado de 'token' a 'access_token'
+          localStorage.setItem('access_token', response.access_token);
           toast.success('¡Inicio de sesión exitoso!');
           this.router.navigate(['/chat']);
         },
-        error: () => {
-          this.error.set('Usuario o contraseña incorrectos');
-          toast.error('Usuario o contraseña incorrectos');
+        error: (err) => {
+          this.error.set('Usuario o contraseña incorrectos.');
+          toast.error('Usuario o contraseña incorrectos.');
+          console.error('Login error:', err);
         }
       });
     } else {
+      this.error.set('Por favor, completa todos los campos.');
       toast.error('Por favor, completa todos los campos.');
     }
   }
