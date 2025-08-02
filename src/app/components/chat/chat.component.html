@@ -1,5 +1,5 @@
-<div class="container-fluid min-vh-100 d-flex flex-column">
-  <h1 class="text-center text-primary mt-4">¡Chatea y Aprende!</h1>
+<div class="container-fluid min-vh-100 d-flex flex-column" style="background: var(--background-color, #E3F2FD);" @messageAnimation>
+  <h1 class="text-center mt-4" style="color: var(--primary-color, #4CAF50); font-size: 2rem;">¡Chatea y Aprende!</h1>
   <div class="card shadow-lg p-4 mx-auto mt-4" style="max-width: 600px; width: 100%;">
     <div class="mb-3">
       <label for="theme" class="form-label">Elige un tema</label>
@@ -13,27 +13,23 @@
     <div #chatContainer class="chat-container mb-3" style="max-height: 400px; overflow-y: auto;">
       @for (message of messages(); track message.question) {
         <div class="mb-2" @messageAnimation>
-          <p class="p-2 rounded" style="background-color: var(--secondary-color);"><strong>Tú:</strong> {{ message.question }}</p>
-          <p class="bg-light text-dark p-2 rounded"><strong>Chat:</strong> {{ message.response }}</p>
+          <p class="p-2 rounded" style="background-color: var(--secondary-color, #FFCA28); color: black;"><strong>Tú:</strong> {{ message.question }}</p>
+          <p class="p-2 rounded" style="background-color: var(--accent-color, #E3F2FD); color: black;"><strong>Chat:</strong> {{ message.response }}</p>
         </div>
       }
     </div>
-    <form [formGroup]="chatForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="chatForm" (submit)="onSubmit()">
       <div class="input-group">
         <input formControlName="question" type="text" class="form-control" placeholder="Pregunta algo, como: ¿Qué es un volcán?">
-        <button type="submit" [disabled]="chatForm.invalid || loading()" class="btn btn-primary">Enviar</button>
+        <button type="submit" [disabled]="chatForm.invalid || loading()" class="btn btn-primary" style="background-color: var(--primary-color, #4CAF50); border-color: var(--primary-color, #4CAF50);">Enviar</button>
       </div>
-      <button type="button" class="btn btn-secondary mt-3 w-100" (click)="clearHistory()">Borrar historial</button>
     </form>
-    @if (loading()) {
-      <div class="text-center mt-3">
-        <div class="spinner-border" role="status">
-          <span class="visually-hidden">Cargando...</span>
-        </div>
+    <div [hidden]="!loading()" class="text-center mt-3">
+      <div class="spinner-border" style="color: var(--primary-color, #4CAF50);" role="status">
+        <span class="visually-hidden">Cargando...</span>
       </div>
-    }
-    @if (error()) {
-      <p class="text-danger text-center mt-3">{{ error() }}</p>
-    }
+    </div>
+    <p [hidden]="!error()" class="text-danger text-center mt-3">{{ error() }}</p>
+    <button type="button" class="btn btn-secondary mt-3 w-100" (click)="clearHistory()">Borrar historial</button>
   </div>
 </div>
