@@ -1,4 +1,4 @@
-import { Component, signal, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
+import { Component, signal, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../services/api.service';
@@ -18,7 +18,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
     ])
   ]
 })
-export class ChatComponent implements AfterViewChecked {
+export class ChatComponent {
   @ViewChild('chatContainer') chatContainer!: ElementRef<HTMLDivElement>;
   chatForm: FormGroup;
   messages = signal<{ question: string, response: string }[]>(this.loadMessages());
@@ -40,10 +40,6 @@ export class ChatComponent implements AfterViewChecked {
     localStorage.setItem('chatHistory', JSON.stringify(messages));
   }
 
-  ngAfterViewChecked() {
-    this.scrollToBottom();
-  }
-
   private scrollToBottom() {
     if (this.chatContainer) {
       setTimeout(() => {
@@ -54,7 +50,7 @@ export class ChatComponent implements AfterViewChecked {
 
   onSubmit() {
     if (this.chatForm.valid) {
-      this.loading.set(true); // Mostrar el spinner
+      this.loading.set(true);
       const { question, theme } = this.chatForm.value;
       const fullQuestion = theme !== 'general' ? `[${theme}] ${question}` : question;
       const token = localStorage.getItem('token') || '';
@@ -64,17 +60,18 @@ export class ChatComponent implements AfterViewChecked {
           this.messages.set(newMessages);
           this.saveMessages(newMessages);
           this.chatForm.reset({ theme });
-          this.scrollToBottom();
-          this.loading.set(false); // Ocultar el spinner
+          this.scrollToBottom(); // Llamar scrollToBottom solo después de agregar un nuevo mensaje
+          this.loading.set(false);
         },
         error: (err) => {
           this.error.set('Error al obtener respuesta');
           console.error('Chat error:', err);
-          this.loading.set(false); // Ocultar el spinner en caso de error
+          this.loading.set(false);
         }
       });
     }
   }
+
   clearHistory() {
     this.messages.set([]);
     this.saveMessages([]);
