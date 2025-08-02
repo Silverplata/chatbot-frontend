@@ -1,39 +1,49 @@
-<div class="container-fluid min-vh-100 d-flex flex-column" style="background: var(--background-color, #E3F2FD);" @fadeIn>
-  <h1 class="text-center mt-4" style="color: var(--primary-color, #4CAF50); font-size: 2rem;">¡Personaliza tu Chat!</h1>
-  <div class="card shadow-lg p-4 mx-auto mt-4" style="max-width: 600px; width: 100%;">
-    <h2 class="text-center mb-4" style="color: var(--primary-color, #4CAF50);">Paleta de Colores</h2>
+<div class="container-fluid min-vh-100 d-flex flex-column align-items-center" style="background: var(--gradient-bg, linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%));" @fadeIn>
+  <h1 class="text-center mt-5 mb-4" style="color: var(--primary-color, #4CAF50); font-size: 2.5rem; font-weight: bold;">¡Personaliza tu Chat!</h1>
+  <div class="card shadow-lg p-4 mx-auto" style="max-width: 900px; width: 100%;">
+    <h2 class="text-center mb-4" style="color: var(--primary-color, #4CAF50); font-size: 1.8rem;">Elige tus colores favoritos</h2>
     <form [formGroup]="paletteForm" (submit)="onSubmit()">
-      <div class="mb-3">
-        <label for="primary_color" class="form-label">Color Primario</label>
-        <input type="color" id="primary_color" formControlName="primary_color" class="form-control form-control-color">
-        <small class="form-text text-muted">Para botones y detalles importantes.</small>
+      <div class="row row-cols-1 row-cols-md-2 g-4 mb-4">
+        <div class="col">
+          <div class="color-card">
+            <label for="primary_color" class="form-label">Color Primario</label>
+            <input type="color" id="primary_color" formControlName="primary_color" class="form-control-color">
+            <small class="form-text text-muted">Para botones y detalles importantes.</small>
+          </div>
+        </div>
+        <div class="col">
+          <div class="color-card">
+            <label for="secondary_color" class="form-label">Color Secundario</label>
+            <input type="color" id="secondary_color" formControlName="secondary_color" class="form-control-color">
+            <small class="form-text text-muted">Para fondos y detalles.</small>
+          </div>
+        </div>
+        <div class="col">
+          <div class="color-card">
+            <label for="accent_color" class="form-label">Color de Acento</label>
+            <input type="color" id="accent_color" formControlName="accent_color" class="form-control-color">
+            <small class="form-text text-muted">Para resaltar elementos.</small>
+          </div>
+        </div>
+        <div class="col">
+          <div class="color-card">
+            <label for="background_color" class="form-label">Color de Fondo</label>
+            <input type="color" id="background_color" formControlName="background_color" class="form-control-color">
+            <small class="form-text text-muted">Para el fondo de la pantalla.</small>
+          </div>
+        </div>
       </div>
-      <div class="mb-3">
-        <label for="secondary_color" class="form-label">Color Secundario</label>
-        <input type="color" id="secondary_color" formControlName="secondary_color" class="form-control form-control-color">
-        <small class="form-text text-muted">Para fondos y detalles.</small>
-      </div>
-      <div class="mb-3">
-        <label for="accent_color" class="form-label">Color de Acento</label>
-        <input type="color" id="accent_color" formControlName="accent_color" class="form-control form-control-color">
-        <small class="form-text text-muted">Para resaltar elementos.</small>
-      </div>
-      <div class="mb-3">
-        <label for="background_color" class="form-label">Color de Fondo</label>
-        <input type="color" id="background_color" formControlName="background_color" class="form-control form-control-color">
-        <small class="form-text text-muted">Para el fondo de la pantalla.</small>
-      </div>
-      <div class="d-flex gap-2">
-        <button type="submit" [disabled]="paletteForm.invalid" class="btn btn-primary w-100" style="background-color: var(--primary-color, #4CAF50); border-color: var(--primary-color, #4CAF50);">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+      <div class="d-flex gap-3 justify-content-center mb-4">
+        <button type="submit" [disabled]="paletteForm.invalid" class="btn btn-primary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
             <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
             <polyline points="17,21 17,13 7,13 7,21"/>
             <polyline points="7,3 7,8 15,8"/>
           </svg>
           Guardar Colores
         </button>
-        <button type="button" class="btn btn-secondary w-100" (click)="resetToDefault()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+        <button type="button" class="btn btn-secondary" (click)="resetToDefault()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
             <polyline points="1 4 1 10 7 10"/>
             <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
           </svg>
@@ -41,13 +51,33 @@
         </button>
       </div>
     </form>
-    <div class="mt-3" [hidden]="!userProfile()">
-      <h3 style="color: var(--primary-color, #4CAF50);">Vista Previa</h3>
-      <div class="d-flex flex-column gap-2">
-        <div class="p-2 rounded" style="background-color: var(--primary-color, #4CAF50); color: white;">Botones Principales</div>
-        <div class="p-2 rounded" style="background-color: var(--secondary-color, #FFCA28); color: black;">Fondos Secundarios</div>
-        <div class="p-2 rounded" style="background-color: var(--accent-color, #E3F2FD); color: black;">Detalles de Acento</div>
-        <div class="p-2 rounded" style="background-color: var(--background-color, #FFFFFF); color: black;">Fondo General</div>
+    <div class="mt-4" [hidden]="!userProfile()">
+      <h3 class="text-center mb-3" style="color: var(--primary-color, #4CAF50); font-size: 1.5rem;">Vista Previa</h3>
+      <div class="row row-cols-1 row-cols-md-2 g-3">
+        <div class="col">
+          <div class="preview-card" style="background-color: var(--primary-color, #4CAF50); color: white;">
+            <div class="preview-icon"></div>
+            <span>Botones Principales</span>
+          </div>
+        </div>
+        <div class="col">
+          <div class="preview-card" style="background-color: var(--secondary-color, #FFCA28); color: var(--text-color);">
+            <div class="preview-icon"></div>
+            <span>Fondos Secundarios</span>
+          </div>
+        </div>
+        <div class="col">
+          <div class="preview-card" style="background-color: var(--accent-color, #E3F2FD); color: var(--text-color);">
+            <div class="preview-icon"></div>
+            <span>Detalles de Acento</span>
+          </div>
+        </div>
+        <div class="col">
+          <div class="preview-card" style="background-color: var(--background-color, #FFFFFF); color: var(--text-color); border: 1px solid #e5e7eb;">
+            <div class="preview-icon"></div>
+            <span>Fondo General</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
