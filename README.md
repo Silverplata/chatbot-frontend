@@ -80,10 +80,10 @@ chatbot-frontend/
 3. Accede a la aplicación en `http://localhost:4200`.
 
 ### Opción 2: Con Docker
-1. Asegúrate de que el archivo `docker-compose.yml` esté en el directorio raíz (`E:\PROYECTOS_DEVAS\CURSOS.YOUTUBE\PYTHON\childbot`) y que incluya el servicio `frontend`.
+1. Asegúrate de que el archivo `docker-compose.yml` esté en el directorio raíz (`E:\childbot`) y que incluya el servicio `frontend`.
 2. Construye y ejecuta el contenedor:
    ```bash
-   cd E:\PROYECTOS_DEVAS\CURSOS.YOUTUBE\PYTHON\childbot
+   cd E:\childbot
    docker-compose up --build
    ```
 3. Accede a la aplicación en `http://localhost:4200`.
